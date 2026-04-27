@@ -25,8 +25,10 @@ export async function POST(request: Request) {
     const result = await model.generateContent(prompt);
     return NextResponse.json({ message: result.response.text() });
 
-  } catch (error) {
+  } catch (error: any) {
     console.error("Lỗi AI:", error);
-    return NextResponse.json({ message: 'Lỗi hệ thống AI.' }, { status: 500 });
-  }
+    // Trả thẳng lỗi của Google về màn hình web
+    return NextResponse.json({ message: `Lỗi từ Google: ${error.message || 'Không rõ nguyên nhân'}` }, { status: 500 });
+  
+}
 }

@@ -34,8 +34,9 @@ export async function POST(request: Request) {
         const result = await model.generateContent(prompt);
         return NextResponse.json({ message: result.response.text() });
 
-    } catch (error) {
-        console.error("Lỗi AI VIP:", error);
-        return NextResponse.json({ message: 'Lỗi hệ thống khi gọi AI VIP.' }, { status: 500 });
-    }
+    } catch (error: any) {
+    console.error("Lỗi AI VIP:", error);
+    // Trả thẳng lỗi của Google về màn hình web
+    return NextResponse.json({ message: `Lỗi từ Google: ${error.message || 'Không rõ nguyên nhân'}` }, { status: 500 });
+  }
 }
