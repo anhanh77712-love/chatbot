@@ -14,7 +14,7 @@ export async function POST(request: Request) {
         const { situation } = body;
 
         // 1. TỰ ĐỘNG LẤY TOÀN BỘ SẢN PHẨM TỪ DATABASE
-        const { rows } = await sql`SELECT * FROM Products;`;
+        const { rows } = await sql`SELECT * FROM Products WHERE is_visible = TRUE;`;
         const productInfo = JSON.stringify(rows);
 
         // 2. GIAO VIỆC CHO AI VIP
