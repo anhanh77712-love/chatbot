@@ -6,7 +6,6 @@ import { useState, useEffect } from 'react';
 type Product = { id: number; name: string; link: string };
 
 export default function Home() {
-  // THÊM: Có 3 tab bây giờ (products, chat, aivip)
   const [activeTab, setActiveTab] = useState<'products' | 'chat' | 'aivip'>('products');
   const [products, setProducts] = useState<Product[]>([]);
   
@@ -68,9 +67,18 @@ export default function Home() {
       const data = await res.json(); setChatResponse(data.message);
     } catch (e) { setChatResponse('Ôi hỏng rồi, có lỗi xảy ra! 😭'); } finally { setIsChatting(false); }
   };
+  
   const handleCopy = () => {
     navigator.clipboard.writeText(chatResponse); setIsCopied(true);
     setTimeout(() => setIsCopied(false), 2000);
+  };
+
+  // THÊM: Hàm làm mới Tab Đề Xuất
+  const handleResetChat = () => {
+    setSituation('');
+    setSelectedProductId('');
+    setChatResponse('');
+    setIsCopied(false);
   };
 
   // --- HÀM TAB AI VIP (Tự động) ---
@@ -82,9 +90,17 @@ export default function Home() {
       const data = await res.json(); setVipResponse(data.message);
     } catch (e) { setVipResponse('Ôi hỏng rồi, có lỗi xảy ra! 😭'); } finally { setIsVipChatting(false); }
   };
+  
   const handleVipCopy = () => {
     navigator.clipboard.writeText(vipResponse); setIsVipCopied(true);
     setTimeout(() => setIsVipCopied(false), 2000);
+  };
+
+  // THÊM: Hàm làm mới Tab AI VIP
+  const handleResetVip = () => {
+    setVipSituation('');
+    setVipResponse('');
+    setIsVipCopied(false);
   };
 
   // --- GIAO DIỆN ---
@@ -143,7 +159,13 @@ export default function Home() {
               <option value="">-- Click để chọn 1 mẫu áo từ Tủ Đồ nha --</option>
               {products.map(p => (<option key={p.id} value={p.id}>{p.name}</option>))}
             </select>
-            <button onClick={handleChat} disabled={isChatting} style={{...buttonStyle, width: '100%', padding: '15px', fontSize: '18px'}}>{isChatting ? 'Đang viết lời nhắn... 🌸' : '✨ Tư Vấn Xong, Trả Kết Quả ✨'}</button>
+            
+            {/* THÊM: Cụm nút bấm có thêm nút Làm Mới */}
+            <div style={{ display: 'flex', gap: '10px' }}>
+              <button onClick={handleChat} disabled={isChatting} style={{...buttonStyle, flex: 1, padding: '15px', fontSize: '18px'}}>{isChatting ? 'Đang viết lời nhắn... 🌸' : '✨ Tư Vấn Xong, Trả Kết Quả ✨'}</button>
+              <button onClick={handleResetChat} style={{...buttonStyle, background: '#fff', color: '#ff69b4', border: '2px solid #ff69b4', padding: '15px', fontSize: '18px'}}>🔄 Làm Mới</button>
+            </div>
+
             {chatResponse && (
               <div style={responseBoxStyle}>
                 <button onClick={handleCopy} title="Sao chép" style={copyBtnStyle}>{isCopied ? '✅' : '📋'}</button>
@@ -162,9 +184,15 @@ export default function Home() {
             <p style={labelStyle}>Tình huống khách hàng:</p>
             <textarea value={vipSituation} onChange={e => setVipSituation(e.target.value)} rows={4} placeholder="VD: Bạn gái đi biển, thích style bánh bèo, che bắp tay to..." style={{...inputStyle, width: '100%', marginBottom: '20px'}} />
             
-            <button onClick={handleVipChat} disabled={isVipChatting} style={{...buttonStyle, width: '100%', padding: '15px', fontSize: '18px', background: 'linear-gradient(45deg, #ff69b4, #ff1493)'}}>
-              {isVipChatting ? 'AI đang quét tủ đồ... 🪄✨' : '🚀 AI Tự Động Chọn Đồ & Tư Vấn 🚀'}
-            </button>
+            {/* THÊM: Cụm nút bấm có thêm nút Làm Mới */}
+            <div style={{ display: 'flex', gap: '10px' }}>
+              <button onClick={handleVipChat} disabled={isVipChatting} style={{...buttonStyle, flex: 1, padding: '15px', fontSize: '18px', background: 'linear-gradient(45deg, #ff69b4, #ff1493)'}}>
+                {isVipChatting ? 'AI đang quét tủ đồ... 🪄✨' : '🚀 AI Tự Động Chọn Đồ & Tư Vấn 🚀'}
+              </button>
+              <button onClick={handleResetVip} style={{...buttonStyle, background: '#fff', color: '#ff1493', border: '2px solid #ff1493', padding: '15px', fontSize: '18px'}}>
+                🔄 Làm Mới
+              </button>
+            </div>
 
             {vipResponse && (
               <div style={{...responseBoxStyle, background: '#fff', border: '3px solid #ffb6c1'}}>
