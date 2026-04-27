@@ -19,8 +19,7 @@ export async function POST(request: Request) {
 
         // 2. GIAO VIỆC CHO AI VIP
         const genAI = new GoogleGenerativeAI(apiKey);
-        const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
-
+const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
         const prompt = `
       Bạn là một nữ nhân viên bán hàng thời trang (bán áo nữ) bạn hãy đưa ra gợi ý để gắn link sản phẩm bằng từ ngữ các nói theo trend , theo kiểu phong cách bài viết.
       Tình huống của khách hàng là: "${situation}".
