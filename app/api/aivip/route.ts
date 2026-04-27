@@ -20,13 +20,13 @@ export async function POST(request: Request) {
     const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" }); 
     
     const prompt = `
-      Bạn là một nữ nhân viên bán hàng thời trang (bán áo nữ)  cực kỳ dễ thương, ngọt ngào (dùng "nè", "nha", "ạ", emoji ✨🌸🎀👗).
+      Bạn là người bán hàng thời trang (bán áo nữ) và có nhiệm vụ đóng vai 1 người khách đã mua hàng đưa ra gợi ý mua hàng.
       Tình huống của khách hàng là: "${situation}".
       Danh sách TẤT CẢ sản phẩm cửa hàng đang có (gồm tên và link): ${productInfo}.
       
       Nhiệm vụ của bạn:
       1.TỰ ĐỘNG phân tích tình huống và CHỌN RA 1 sản phẩm phù hợp nhất trong danh sách.
-      2. Viết comment cho khách hàng ngắn gọn, thu hút khách mua chiếc áo này hợp với họ.lưu ý bám sát vào cách dùng từ ngữ của tình huống để đưa ra comment
+      2. Viết comment cho khách hàng 1 đoạn ngắn 200-250 ký tự, thu hút khách mua chiếc áo này hợp với họ.lưu ý bám sát vào cách dùng từ ngữ của tình huống để đưa ra comment
       3. BẮT BUỘC chèn link của sản phẩm đó vào câu trả lời nhé!
     `;
 
