@@ -50,7 +50,6 @@ export default function Home() {
     }
   };
 
-  // THÊM: Hàm Đổi trạng thái Ẩn/Hiện
   const handleToggleVisibility = async (p: Product) => {
     await fetch('/api/products', { 
       method: 'PUT', 
@@ -118,11 +117,26 @@ export default function Home() {
               </tr></thead>
               <tbody>
                 {products.map(p => (
-                  <tr key={p.id} style={{ borderBottom: '1px solid #ffe4e1', background: p.is_visible ? 'transparent' : '#f0f0f0' }}>
+                  <tr key={p.id} style={{ borderBottom: '1px solid #ffe4e1', background: p.is_visible ? 'transparent' : '#fafafa' }}>
+                    {/* CẬP NHẬT: Thay đổi hiển thị Hiện/Ẩn dạng chữ bấm được */}
                     <td style={tdStyle}>
-                      <button onClick={() => handleToggleVisibility(p)} title="Bấm để đổi trạng thái" style={{...actionBtnStyle, fontSize: '20px'}}>
-                        {p.is_visible ? '👁️' : '🙈'}
-                      </button>
+                      <span 
+                        onClick={() => handleToggleVisibility(p)} 
+                        title="Bấm để đổi trạng thái"
+                        style={{ 
+                          cursor: 'pointer', 
+                          fontWeight: 'bold', 
+                          color: p.is_visible ? '#ff69b4' : '#a0a0a0',
+                          backgroundColor: p.is_visible ? '#fff0f5' : '#eee',
+                          padding: '5px 12px',
+                          borderRadius: '15px',
+                          border: `1px solid ${p.is_visible ? '#ffb6c1' : '#ccc'}`,
+                          fontSize: '14px',
+                          userSelect: 'none'
+                        }}
+                      >
+                        {p.is_visible ? 'Hiện' : 'Ẩn'}
+                      </span>
                     </td>
                     <td style={{...tdStyle, color: p.is_visible ? 'inherit' : '#a0a0a0'}}>{p.name} {p.is_visible ? '' : '(Đã ẩn)'}</td>
                     <td style={tdStyle}><a href={p.link} target="_blank" style={{ color: p.is_visible ? '#ff69b4' : '#a0a0a0' }}>Xem Link</a></td>
@@ -137,7 +151,7 @@ export default function Home() {
           </div>
         )}
 
-        {/* TAB ĐỀ XUẤT */}
+        {/* CÁC TAB KHÁC GIỮ NGUYÊN (VẪN ĐẢM BẢO LỌC ÁO ĐANG HIỆN) */}
         {activeTab === 'chat' && (
           <div style={{...cardStyle, maxWidth: '800px', margin: '0 auto'}}>
             <h2 style={{...headerStyle, textAlign: 'center'}}>💌 Tư Vấn Bán Hàng (Chọn Tay)</h2>
@@ -146,7 +160,6 @@ export default function Home() {
             <p style={labelStyle}>Chọn áo để gợi ý:</p>
             <select value={selectedProductId} onChange={e => setSelectedProductId(e.target.value)} style={{...inputStyle, width: '100%', marginBottom: '20px'}}>
               <option value="">-- Click để chọn 1 mẫu áo từ Tủ Đồ nha --</option>
-              {/* CHỈ LỌC RA ÁO ĐANG HIỆN */}
               {products.filter(p => p.is_visible).map(p => (<option key={p.id} value={p.id}>{p.name}</option>))}
             </select>
             <div style={{ display: 'flex', gap: '10px' }}>
@@ -157,7 +170,6 @@ export default function Home() {
           </div>
         )}
 
-        {/* TAB AI VIP */}
         {activeTab === 'aivip' && (
           <div style={{...cardStyle, maxWidth: '800px', margin: '0 auto', border: '2px solid #ff69b4'}}>
             <h2 style={{...headerStyle, textAlign: 'center'}}>👑 Siêu Trợ Lý AI VIP</h2>
